@@ -1,7 +1,17 @@
 <?php
 
 class BaseController extends Controller {
+	
+	private $returnFormat;
 
+	public function __construct() {
+		$ctrl = &$this;
+		$this->beforeFilter(function($route, $request) use (&$ctrl)
+		{
+			$ctrl->returnFormat = $request->query("format", "json");
+		};
+	}
+	
 	/**
 	 * Setup the layout used by the controller.
 	 *
@@ -14,5 +24,5 @@ class BaseController extends Controller {
 			$this->layout = View::make($this->layout);
 		}
 	}
-
+	
 }

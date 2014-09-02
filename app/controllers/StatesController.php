@@ -9,7 +9,12 @@ class StatesController extends \BaseController {
 	 */
 	public function index()
 	{
-		//
+		//TODO cludge in HATEOAS, other metadata
+		switch($this->returnFormat) {
+			case 'json':
+				return Response::json(State::all();)
+			break;
+		}	
 	}
 
 
