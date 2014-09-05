@@ -52,7 +52,7 @@ class StatesController extends \BaseController {
 							"_links" => array (
 								"parent" => array ( "href" => "/states/0"),
 								"siblings" => array ( "href" => "/counties/?state=DE"),
-								"cities" => array ( "href" => "/cities/?county=3"
+								"cities" => array ( "href" => "/cities/?county=3" )
 							),
 							"id" => 3,
 							"name" => "Sussex County",
