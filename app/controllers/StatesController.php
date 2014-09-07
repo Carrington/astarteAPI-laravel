@@ -6,64 +6,59 @@ class StatesController extends \BaseController {
 	 * Display a listing of the resource.
 	 *
 	 * @return Response
+	 * @todo employ record limit, pagination (add next rel to links)
+	 * @todo curies and self should be turned into helpers or something
+	 * @todo helper for embeddeds
 	 */
 	public function index()
 	{
-		/**
-		 * commenting out real logic to create stubs
-                 * to prototype UI.
-		switch($this->returnFormat) {
-			case 'json':
-				return Response::json(State::all();)
-			break;
-		}
-		 *
-		 */
-
-		$payload = array (
-			0 => array (
-				"_links" => array(
-					"self" => array ( "href" => "/states/0" )
+		$responseData = array (
+			'_links' => array (
+				'self' => array (
+					"href" => "/states"
 				),
-				"_embedded" => array(
-					"counties" => array (
-						0 => array (
-							"_links" => array (
-								"parent" => array ( "href" => "/states/0" ),
-								"siblings" => array ( "href" => "/counties/?state=DE" ),
-								"cities" => array ( "href" => "/cities/?county=1" )
-							),
-							"id" => 1,
-							"name" => "Kent County",
-							"FIPS" => "001"
-						),
-						1 => array (
-							"_links" => array (
-								"parent" => array ( "href" => "/states/0"),
-								"siblings" => array ( "href" => "/counties/?state=DE"),
-								"cities" => array ( "href" => "/cities/?county=2")
-							),
-							"id" => 2,
-							"name" => "New Castle County",
-							"FIPS" => "003"
-
-						),
-						2 => array (
-							"_links" => array (
-								"parent" => array ( "href" => "/states/0"),
-								"siblings" => array ( "href" => "/counties/?state=DE"),
-								"cities" => array ( "href" => "/cities/?county=3" )
-							),
-							"id" => 3,
-							"name" => "Sussex County",
-							"FIPS" => "005"
-						)
+				'curies' => array (
+					array (
+						'name' => 'ea',
+						'href' => '/docs/rels/{rel}',
+						'templated' => true
 					)
 				),
-				"name" => "Delaware",
-				"state_code" => "DE"
+				'ea:find' => array (
+					'href' => '/states{?state_code}',
+					'templated' => true	
+				)
 			),
-		);	
+			'_embedded' => array (
+				
+			)
+		);
+		
+		$states = State::all();
+
+		foreach ($states as $state) {
+			$record = array();
+
+			foreach ($state as $key => $var) {
+				$record[$key] = $var;
+			}
+
+			$record['_links'] = array (
+				'self' => array (
+					'href' => '/states/' . $state['state_code']
+				),
+				'ea:counties' => array (
+					'href' => '/counties/?state_code=' . $state['state_code']
+				),
+				'ea:cities' => array (
+					'href' => '/cities/?state_code=' . $state['state_code']
+				)
+			);
+
+			$responseData['_embedded'][] = $record;
+		}
+
+		return $responseData;
 	}
 
 
@@ -92,22 +87,50 @@ class StatesController extends \BaseController {
 	/**
 	 * Display the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  string state_code
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($state_code)
 	{
-		//
+		$state = State::find($state_code);
+
+		$record = array();
+
+
+		foreach ($state as $key => $var) {
+			$record[$key] = $var;
+		}
+
+		$record['_links'] = array (
+			'self' => array (
+				'href' => '/states/' . $state['state_code']
+			),
+			'curies' => array (
+				array (
+					'name' => 'ea',
+					'href' => '/docs/rels/{rel}',
+					'templated' => true
+				)
+			),
+			'ea:counties' => array (
+				'href' => '/counties/?state_code=' . $state['state_code']
+			),
+			'ea:cities' => array (
+				'href' => '/cities/?state_code=' . $state['state_code']
+			)
+		);
+
+		return $record;
 	}
 
 
 	/**
 	 * Show the form for editing the specified resource.
 	 *
-	 * @param  int  $id
+	 * @param  int  $state_code
 	 * @return Response
 	 */
-	public function edit($id)
+	public function edit($state_code)
 	{
 		//
 	}
@@ -116,10 +139,10 @@ class StatesController extends \BaseController {
 	/**
 	 * Update the specified resource in storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $state_code
 	 * @return Response
 	 */
-	public function update($id)
+	public function update($state_code)
 	{
 		//
 	}
@@ -128,10 +151,10 @@ class StatesController extends \BaseController {
 	/**
 	 * Remove the specified resource from storage.
 	 *
-	 * @param  int  $id
+	 * @param  int  $state_code
 	 * @return Response
 	 */
-	public function destroy($id)
+	public function destroy($state_code)
 	{
 		//
 	}
