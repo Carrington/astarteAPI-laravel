@@ -69,7 +69,7 @@ class StatesController extends \BaseController {
 	 */
 	public function create()
 	{
-		//
+		App:abort(501);	
 	}
 
 
@@ -80,7 +80,7 @@ class StatesController extends \BaseController {
 	 */
 	public function store()
 	{
-		//
+		App::abort(501);
 	}
 
 
@@ -132,7 +132,7 @@ class StatesController extends \BaseController {
 	 */
 	public function edit($state_code)
 	{
-		//
+		App::abort(501);
 	}
 
 
@@ -144,7 +144,12 @@ class StatesController extends \BaseController {
 	 */
 	public function update($state_code)
 	{
-		//
+		$state = State::find($state_code);
+
+		$state->state_name = (Input::get('state_name')) ? Input::get('state_name') : $state->state_name;
+		$state->state_code = (Input::get('state_code')) ? Input::get('state_code') : $state->state_code;
+
+		return true;
 	}
 
 
@@ -156,7 +161,10 @@ class StatesController extends \BaseController {
 	 */
 	public function destroy($state_code)
 	{
-		//
+		$state = State::find($state_code);
+		$state->delete();
+
+		return true;
 	}
 
 
