@@ -112,7 +112,7 @@ class SeedStateData extends Migration {
 				),
 				array(
 					'state_name' => 'Arkansas',
-					'state_code' => 'AK'
+					'state_code' => 'AR'
 				),
 				array(
 					'state_name' => 'Michigan',

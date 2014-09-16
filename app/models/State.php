@@ -1,9 +1,16 @@
 <?php
 
-class State extends Eloquent {
+use LaravelBook\Ardent\Ardent;
+
+class State extends Ardent {
 
 	//MASS ASSIGNMENT
-	protected $fillable = array('state_name', 'state_code');
+	protected $fillable = array ( 'state_name', 'state_code' );
+
+
+	//Ardent validation rules
+	public static $rules = array ( 'state_name' => 'required|alpha',
+					'state_code' => 'required|alpha|size:2' );
 
 	//DEFINE RELATIONSHIPS
 	public function counties()

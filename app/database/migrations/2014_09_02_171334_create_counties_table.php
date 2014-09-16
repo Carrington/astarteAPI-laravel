@@ -18,7 +18,7 @@ class CreateCountiesTable extends Migration {
 
 			$table->string('county_code');
 			$table->string('county_name');
-			$table->integer('state');
+			$table->string('state_code');
 
 			$table->timestamps();
 		});
