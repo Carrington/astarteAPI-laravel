@@ -15,6 +15,11 @@ class CreateFacilityTable extends Migration {
 		Schema::create('facility', function(Blueprint $table)
 		{
 			$table->increments('id');
+
+			$table->string('address');
+			$table->integer('city')->references('id')->on('cities');
+			$table->integer('facility_type')->references('id')->on('facility_types');
+
 			$table->timestamps();
 		});
 	}

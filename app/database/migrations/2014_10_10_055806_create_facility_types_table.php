@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMethodsTable extends Migration {
+class CreateFacilityTypesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateMethodsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('methods', function(Blueprint $table)
+		Schema::create('facility_types', function(Blueprint $table)
 		{
 			$table->increments('id');
-		
-			$table->string('method_name');
+
+			$table->string('label');
 
 			$table->timestamps();
 		});
@@ -29,7 +29,7 @@ class CreateMethodsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('methods');
+		Schema::drop('facility_types');
 	}
 
 }

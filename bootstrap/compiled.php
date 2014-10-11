@@ -1360,6 +1360,7 @@ class Request
     }
     public function overrideGlobals()
     {
+        $this->server->set('QUERY_STRING', static::normalizeQueryString(http_build_query($this->query->all(), null, '&')));
         $_GET = $this->query->all();
         $_POST = $this->request->all();
         $_SERVER = $this->server->all();
@@ -1607,7 +1608,7 @@ class Request
             }
         }
         $host = strtolower(preg_replace('/:\\d+$/', '', trim($host)));
-        if ($host && !preg_match('/^\\[?(?:[a-zA-Z0-9-:\\]_]+\\.?)+$/', $host)) {
+        if ($host && '' !== preg_replace('/(?:^\\[)?[a-zA-Z0-9-:\\]_]+\\.?/', '', $host)) {
             throw new \UnexpectedValueException(sprintf('Invalid Host "%s"', $host));
         }
         if (count(self::$trustedHostPatterns) > 0) {
@@ -1696,6 +1697,10 @@ class Request
         if (null === $this->locale) {
             $this->setPhpDefaultLocale($locale);
         }
+    }
+    public function getDefaultLocale()
+    {
+        return $this->defaultLocale;
     }
     public function setLocale($locale)
     {
@@ -2163,12 +2168,12 @@ class ServerBag extends ParameterBag
                 $authorizationHeader = $this->parameters['REDIRECT_HTTP_AUTHORIZATION'];
             }
             if (null !== $authorizationHeader) {
-                if (0 === stripos($authorizationHeader, 'basic')) {
-                    $exploded = explode(':', base64_decode(substr($authorizationHeader, 6)));
+                if (0 === stripos($authorizationHeader, 'basic ')) {
+                    $exploded = explode(':', base64_decode(substr($authorizationHeader, 6)), 2);
                     if (count($exploded) == 2) {
                         list($headers['PHP_AUTH_USER'], $headers['PHP_AUTH_PW']) = $exploded;
                     }
-                } elseif (empty($this->parameters['PHP_AUTH_DIGEST']) && 0 === stripos($authorizationHeader, 'digest')) {
+                } elseif (empty($this->parameters['PHP_AUTH_DIGEST']) && 0 === stripos($authorizationHeader, 'digest ')) {
                     $headers['PHP_AUTH_DIGEST'] = $authorizationHeader;
                     $this->parameters['PHP_AUTH_DIGEST'] = $authorizationHeader;
                 }

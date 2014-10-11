@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMaterialsTable extends Migration {
+class CreateMaterialClassesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,11 @@ class CreateMaterialsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('materials', function(Blueprint $table)
+		Schema::create('material-class', function(Blueprint $table)
 		{
 			$table->increments('id');
 
-			$table->string('material_name');
-			$table->integer('recycle_category');
+			$table->string('label');
 
 			$table->timestamps();
 		});
@@ -30,7 +29,7 @@ class CreateMaterialsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('materials');
+		Schema::drop('material-class');
 	}
 
 }
